@@ -1,11 +1,24 @@
 //initial array of emotions
 var emotions = ["mad", "glad", "happy", "sad", "cry", "angry", "hope", "help"];
 
-   
+// function that displays var emotions buttons
+function renderButtons() {
+    //deletes buttons before adding new buttons to not repeat buttons
+    $("#gifs-view").empty();
+    //loop through array of emotions gifs
+    for (var i=0; i <emotions.length; i++) {  
+        //dynamically create buttons for each emotion in the emotions array
+        var btnCreate = $("<button>").addClass("gifEmotion").attr("data-name", emotions[i]).text(emotions[i]);
+        //append buttons to the HTML
+        $("#gifs-view").append(btnCreate);
+    }
+}
+renderButtons();
+
 function displayGif() {
-    var gifName = $(this).attr("data-name");
+    // var gifName = $(this).attr("data-name");
     //construct  URL
-    var queryURL = "https://www.omdbapi.com/?t=" + gif + "&y=&plot=short&apikey=trilogy";
+    var queryURL =  "http://api.giphy.com/v1/gifs/search?q=" + emotions+ "&api_key=E0zudOooNauIANaX1Y4bm8INlqYkIjap&limit=5";
 
     // hit the queryURL with $ajax, then take the response data
     // and display it in the div with an id of gif-view
@@ -13,44 +26,36 @@ function displayGif() {
       url: queryURL,
       method: "GET"
     }).then(function(response) {
-      $("#gifs-view").text(JSON.stringify(response));
-    });
+        console.log("response");
+        console.log(response);
+    })
 }
-//function to capture the gif rating from data attribute
-function gifEmotionName() {
-    var gifName = $(this).attr("data-name");
-    console.log(gifName);
-}
+displayGif();
 
-//function that displays gif data
-function renderButtons() {
-    //deletes buttons before adding new buttons to not repeat buttons
-    $("#gifs-view").empty();
+          // Creating a div to hold the movie
+          var emotionDiv = $("<div>").addClass("emo");
+ 
+          // Storing the rating data
+        //   var rating = response.Rated;
 
-    //loop through array of emotions gifs
-    for (var i=0; i <emotions.length; i++) {
-        //dynamically create buttons for each emotion in the emotions array
-        var btnCreate = $("<button>").addClass("gifEmotion").attr("data-name", movies[i]).text(movies[i]);
-        btnCreate.addClass("gifEmotion");
-        //append buttons to the HTML
-        $("#gifs-view").append(btnCreate)
-    }
-}
-//.on("click") function will trigger the AJAX Call
-$("#find-gif").on("click", function(event) {
-    // Here, it prevents the submit button from trying to submit a form when clicked
-    event.preventDefault();
+          // Creating an element to have the rating displayed
+        //   var pOne = $("<p>").text("Rating: " + rating);
 
-    // grab the text from the input box and assigns it to the variable gif
-    var gif = $("#gif-input").val().trim();
+          // Displaying the rating
+        //   movieDiv.append(pOne);
 
-    //emotion added to textbox is added to var emotions array
-    gif.push(emotions);
+        
+        //   // Retrieving the URL for the image
+        //   var imgURL = response.Poster;
 
-    //call renderButtons that processes emotions array
-    renderButtons();
-});
-    // function to display gif info, on click added to elements with the class gifEmotion
-    $(document).on("click", ".movie", gifEmotionName);
-    //calling renderButtons function to initially display list of gifs
-    renderButtons();
+        //   // Creating an element to hold the image
+        //   var image = $("<img>").attr("src", imgURL);
+
+        //   // Appending the image
+        //   movieDiv.append(image);
+
+        //   // Putting the entire movie above the previous movies
+        //   $("#movies-view").prepend(movieDiv);
+        // });
+
+      
