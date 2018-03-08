@@ -4,17 +4,17 @@ var emotions = ["mad", "glad", "happy", "sad", "cry"];
 // function that displays var emotions buttons
 function renderButtons() {
     //deletes buttons before adding new buttons to not repeat buttons
-    $("#gifs-view").empty();
+    $("#btnView").empty();
     //loop through array of emotions gifs
     for (var i = 0; i < emotions.length; i++) {
         //dynamically create buttons for each emotion in the emotions array
         var btnCreate = $("<button>").addClass("emotionBtn").attr("data-name", emotions[i]).text(emotions[i]);
         //append buttons to the HTML
-        $("#gifs-view").append(btnCreate);
+        $("#btnView").append(btnCreate);
     }
 }
-
 function displayGif() {
+    //grabs/stores the data-name property value from the button
     var gifName = $(this).attr("data-name");
     //construct  URL
     var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + emotions + "&api_key=E0zudOooNauIANaX1Y4bm8INlqYkIjap&limit=10";
@@ -23,42 +23,43 @@ function displayGif() {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function (response) {
-        console.log("response");
-        console.log(response);
+    })
+        //after data returns from request
+        .then(function (response) {
+            console.log("response" + response);
 
-        for (var i = 0; i < 11; i++) {
-            //holds gif
-            var gifDiv = $("<div>").addClass("holdsGif");
+            //store data from AJAX request to results
+            var results = response.data;
 
-            //stores rating data to givenRate
-            var givenRate = response.data[i].rating;
-            console.log("rating " + givenRate);
+            for (var i = 0; i < results.length; i++) {
+                // //holds gif
+                var gifDiv = $("<div>").addClass("holdsGif");
 
-            //element to display rating
-            var displayRating = $("<p>").text("Rating: " + givenRate);
+                //stores rating data to givenRate
+                var givenRate = results[i].rating;
+                console.log("rating " + givenRate);
 
-            //display rating
-            $(".actualGifs").append(displayRating);
-        }
+                //element to display rating
+                var displayRating = $("<p>").text("Rating: " + givenRate);
 
-        //retrieve URL for image
+                //create element that holds image
+                var gifImage = $("<img>").attr("src", imgURL);
 
-        var imgURL = response.data[i].images;
-        alert("Image" + imgURL);
+                //retrieve URL for image
+                var imgURL = results[i].images.fixed_height.url;
 
-        // // Creating an element to hold the image
-        // var image = $("<img>").attr("src", imgURL);
+                //appends image
+                gifDiv.append(gifImage);
+                //display rating
+                gifDiv.append(displayRating);
 
-        // // Appending the image
-        // movieDiv.append(image);
-
-        // // Putting the entire movie above the previous movies
-        // $("#movies-view").prepend(movieDiv);
-    });
+                //puts entire thing above the previous gif
+                $("#actualGifs").prepend(gifDiv);
+            };
+        });
 }
-displayGif();
 
+displayGif();
 //.on("click") function will trigger the AJAX Call
 $("#add-gif").on("click", function (event) {
     // Here, it prevents the submit button from trying to submit a form when clicked
@@ -77,5 +78,3 @@ $("#add-gif").on("click", function (event) {
 $(document).on("click", ".emotionBtn", displayGif);
 //calling renderButtons function to initially display list of gifs
 renderButtons();//initial array of emotions
-
-
