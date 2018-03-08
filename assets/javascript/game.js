@@ -13,7 +13,10 @@ function renderButtons() {
         $("#btnView").append(btnCreate);
     }
 }
-function displayGif() {
+ //calling renderButtons function to initially display list of gifs
+ renderButtons();
+
+$("button").on("click", function () {
     //grabs/stores the data-name property value from the button
     var gifName = $(this).attr("data-name");
     //construct  URL
@@ -30,7 +33,7 @@ function displayGif() {
 
             //store data from AJAX request to results
             var results = response.data;
-
+            //loops over 
             for (var i = 0; i < results.length; i++) {
                 // //holds gif
                 var gifDiv = $("<div>").addClass("holdsGif");
@@ -55,26 +58,24 @@ function displayGif() {
 
                 //puts entire thing above the previous gif
                 $("#actualGifs").prepend(gifDiv);
-            };
+            }
         });
-}
+    });
 
-displayGif();
-//.on("click") function will trigger the AJAX Call
-$("#add-gif").on("click", function (event) {
-    // Here, it prevents the submit button from trying to submit a form when clicked
-    event.preventDefault();
+    // displayGif();
+    //.on("click") function will trigger the AJAX Call
+    $("#add-gif").on("click", function (event) {
+        // Here, it prevents the submit button from trying to submit a form when clicked
+        event.preventDefault();
 
-    // grab the text from the input box and assigns it to the variable gif
-    var gif = $("#gif-input").val().trim();
+        // grab the text from the input box and assigns it to the variable gif
+        var gif = $("#gif-input").val().trim();
 
-    //emotion added to textbox is added to var emotions array
-    emotions.push(gif);
+        //emotion added to textbox is added to var emotions array
+        emotions.push(gif);
 
-    //call renderButtons that processes emotions array
-    renderButtons();
-});
-// function to display gif info, on click added to elements with the class emotionBtn
-$(document).on("click", ".emotionBtn", displayGif);
-//calling renderButtons function to initially display list of gifs
-renderButtons();//initial array of emotions
+        //call renderButtons that processes emotions array
+        renderButtons();
+    });
+    // function to display gif info, on click added to elements with the class emotionBtn
+    // $(document).on("click", ".emotionBtn", displayGif);
