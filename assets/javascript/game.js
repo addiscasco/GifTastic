@@ -13,10 +13,9 @@ function renderButtons() {
         $("#gifs-view").append(btnCreate);
     }
 }
-renderButtons();
 
 function displayGif() {
-    // var gifName = $(this).attr("data-name");
+    var gifName = $(this).attr("data-name");
     //construct  URL
     var queryURL =  "http://api.giphy.com/v1/gifs/search?q=" + emotions+ "&api_key=E0zudOooNauIANaX1Y4bm8INlqYkIjap&limit=5";
 
@@ -32,30 +31,23 @@ function displayGif() {
 }
 displayGif();
 
-          // Creating a div to hold the movie
-          var emotionDiv = $("<div>").addClass("emo");
- 
-          // Storing the rating data
-        //   var rating = response.Rated;
+//.on("click") function will trigger the AJAX Call
+$("#add-gif").on("click", function(event) {
+    // Here, it prevents the submit button from trying to submit a form when clicked
+    event.preventDefault();
 
-          // Creating an element to have the rating displayed
-        //   var pOne = $("<p>").text("Rating: " + rating);
+    // grab the text from the input box and assigns it to the variable gif
+    var gif = $("#gif-input").val().trim();
 
-          // Displaying the rating
-        //   movieDiv.append(pOne);
+    //emotion added to textbox is added to var emotions array
+    emotions.push(gif);
 
-        
-        //   // Retrieving the URL for the image
-        //   var imgURL = response.Poster;
-
-        //   // Creating an element to hold the image
-        //   var image = $("<img>").attr("src", imgURL);
-
-        //   // Appending the image
-        //   movieDiv.append(image);
-
-        //   // Putting the entire movie above the previous movies
-        //   $("#movies-view").prepend(movieDiv);
-        // });
+    //call renderButtons that processes emotions array
+    renderButtons();
+});
+    // function to display gif info, on click added to elements with the class gifEmotion
+    $(document).on("click", ".gifEmotion", displayGif);
+    //calling renderButtons function to initially display list of gifs
+    renderButtons();//initial array of emotions
 
       
