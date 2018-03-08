@@ -1,5 +1,5 @@
 //initial array of emotions
-var emotions = ["mad", "glad", "happy", "sad", "cry", "angry", "hope", "help"];
+var emotions = ["mad", "glad", "happy", "sad", "cry"];
 
 // function that displays var emotions buttons
 function renderButtons() {
@@ -17,7 +17,7 @@ function renderButtons() {
 function displayGif() {
     var gifName = $(this).attr("data-name");
     //construct  URL
-    var queryURL =  "http://api.giphy.com/v1/gifs/search?q=" + emotions+ "&api_key=E0zudOooNauIANaX1Y4bm8INlqYkIjap&limit=5";
+    var queryURL =  "http://api.giphy.com/v1/gifs/search?q=" + emotions+ "&api_key=E0zudOooNauIANaX1Y4bm8INlqYkIjap&limit=10";
 
     // hit the queryURL with $ajax, then take the response data
     // and display it in the div with an id of gif-view
@@ -27,7 +27,25 @@ function displayGif() {
     }).then(function(response) {
         console.log("response");
         console.log(response);
-    })
+
+        //holds gif
+        var gifDiv = $("<div>").addClass("holdsGif");
+
+        for (var i=0; i <11; i++) {
+            //stores rating data to givenRate
+            var givenRate = response.data[i].rating;
+            console.log("rating " + givenRate); 
+        }
+        // //element to display rating
+        // var displayRating = $("<p>").text("Rating: " + rating);
+
+        // //display rating
+        // gifDiv.append(displayRating);
+
+        //retrieve URL for image
+
+        var imgURL = response.images;
+    });
 }
 displayGif();
 
