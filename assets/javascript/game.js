@@ -19,7 +19,7 @@ $(document).ready(function () {
         //grabs/stores the data-name property value from the button
         var gifName = $(this).attr("data-name");
         //construct  URL
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + gifName + "&api_key=E0zudOooNauIANaX1Y4bm8INlqYkIjap&limit=15";
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gifName + "&api_key=E0zudOooNauIANaX1Y4bm8INlqYkIjap&limit=15";
         // hit the queryURL with $ajax, then take the response data
         // and display it in the div with an id of gif-view
         $.ajax({
