@@ -8,7 +8,7 @@ $(document).ready(function () {
         //loop through array of emotions gifs
         for (var i = 0; i < btnArray.length; i++) {
             //dynamically create buttons for each emotion in the emotions array
-            var btnCreate = $("<button>").addClass("emotionBtn").attr("data-name", btnArray[i]).text(btnArray[i]);
+            var btnCreate = $("<button>").addClass("btn").attr("data-name", btnArray[i]).text(btnArray[i]);
             //append buttons to the HTML
             $("#btnView").append(btnCreate);
         }
@@ -80,5 +80,62 @@ $(document).ready(function () {
         renderButtons();
     });
     // function to display gif info, on click added to elements with the class emotionBtn
-    $(document).on("click", ".emotionBtn", displayGifs);
+    $(document).on("click", ".btn", displayGifs);
 })
+
+var TxtType = function (el, toRotate, period) {
+    this.toRotate = toRotate;
+    this.el = el;
+    this.loopNum = 0;
+    this.period = parseInt(period, 10) || 2000;
+    this.txt = '';
+    this.tick();
+    this.isDeleting = false;
+};
+
+TxtType.prototype.tick = function () {
+    var i = this.loopNum % this.toRotate.length;
+    var fullTxt = this.toRotate[i];
+
+    if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 1);
+    } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+    }
+
+    this.el.innerHTML = '<span class="wrap">' + this.txt + '</span>';
+
+    var that = this;
+    var delta = 200 - Math.random() * 100;
+
+    if (this.isDeleting) { delta /= 2; }
+
+    if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period;
+        this.isDeleting = true;
+    } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 500;
+    }
+
+    setTimeout(function () {
+        that.tick();
+    }, delta);
+};
+
+window.onload = function () {
+    var elements = document.getElementsByClassName('typewrite');
+    for (var i = 0; i < elements.length; i++) {
+        var toRotate = elements[i].getAttribute('data-type');
+        var period = elements[i].getAttribute('data-period');
+        if (toRotate) {
+            new TxtType(elements[i], JSON.parse(toRotate), period);
+        }
+    }
+    // INJECT CSS
+    var css = document.createElement("style");
+    css.type = "text/css";
+    css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
+    document.body.appendChild(css);
+};
